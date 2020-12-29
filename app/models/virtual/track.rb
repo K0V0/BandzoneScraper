@@ -11,7 +11,7 @@ class Virtual::Track
     def self.find(slug)
         result = []
         url_regex = /^(http\:\/\/|https\:\/\/)?(www)?(bandzone\.cz\/track\/)(play)(\/)(\d+)(.+)$/
-        duration_regex = /^PT(\d+)M(\d+\.*\d*)S/
+        duration_regex = /^PT(\d+)M(\d*\.*\d*)S*/
         album_regex = /\s*\-*\s*/
         plays_count_regex = /\D/i
 
@@ -41,7 +41,7 @@ class Virtual::Track
                 full_title: full_title,
                 title: title,
                 album: album,
-                playsCount: track.css("span.total-plays")[0].text.squish.gsub(plays_count_regex, ""),
+                plays_count: track.css("span.total-plays")[0].text.squish.gsub(plays_count_regex, ""),
                 href: href,
                 href_hash: Digest::MD5.hexdigest(href),
                 duration: duration
