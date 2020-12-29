@@ -12,18 +12,23 @@ Application currently runs on my virtual server without domain on address [http:
 ### Search bands by name, query bands list (paginated, full search)  
 
 GET request to:
+
 ```
 http(s)://<domain>/search/bands?q=<band_name>&p=<page_if_available>
 ```
+
 Source of data: [https://bandzone.cz/kapely.html?q=[band_name]&p=[page_num]](https://bandzone.cz/kapely.html)
 
 #### Example
 
 request:
+
 ```
 http://172.104.155.216:3030/search/bands?q=wilderness
 ```
+
 output:
+
 ```
 {
 	"table": {
@@ -53,18 +58,20 @@ output:
 
 ```
 
-
-### get songs list from webplayer for given band
+### get songs list from webplayer for given band
 
 GET request to:
+
 ```
 http(s)://<domain>/songs/list?q=<band_slug>
 ```
+
 Source of data : [https://bandzone.cz/[band_slug_name]](https://bandzone.cz/thewildernesstt)
 
 #### Example
 
 You want to listen to "The Wilderness", this one:
+
 ```
 ...
 {
@@ -77,11 +84,15 @@ You want to listen to "The Wilderness", this one:
 }
 ...
 ```
+
 request:
+
 ```
 http://172.104.155.216:3030/songs/list?q=thewildernesstt
 ```
+
 output:
+
 ```
 [
 	{
@@ -96,6 +107,7 @@ output:
 	...
 ]
 ```
+
 
 
 
