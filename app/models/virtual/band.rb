@@ -18,15 +18,16 @@ class Virtual::Band
         page = scrape("https://bandzone.cz/kapely.html?q=#{search_term}&p=#{page}")
         rows = page.css('table#searchResults').css('div.profileLink.band')
         result.data = self.scrapeBandsData(rows)
+        result.items_current_page = result.data.length
         paginator = page.css('div.paginator')[0]
         if paginator.nil?
             result.pages_count = 1
             result.current_page = 1
             result.items_total = rows.length
         else
-            result.pages_count = paginator['data-paginator-pages']
-            result.items_total = paginator['data-paginator-items']
-            result.current_page = paginator.css('a.page.current').text
+            result.pages_count = paginator['data-paginator-pages'].to_i
+            result.items_total = paginator['data-paginator-items'].to_i
+            result.current_page = paginator.css('a.page.current').text.to_i
         end
         return result
     end
