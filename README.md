@@ -52,7 +52,8 @@ output:
 		],
 		"pages_count": 1,
 		"current_page": 1,
-		"items_total": 2
+		"items_total": 2,
+		"items_current_page": 2
 	}
 }
 
