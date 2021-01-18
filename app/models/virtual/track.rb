@@ -9,16 +9,19 @@ class Virtual::Track
     end
 
     def self.find(slug)
+        data = scrape("https://bandzone.cz/" + slug)
+        tracks = data.css("ul#playlist").css("li")
+        return processTracks(tracks)
+    end
+
+    def self.processTracks(tracks)
         result = []
         url_regex = /^(http\:\/\/|https\:\/\/)?(www)?(bandzone\.cz\/track\/)(play)(\/)(\d+)(.+)$/
         duration_regex = /^PT(\d+)M(\d*\.*\d*)S*/
         album_regex = /\s*\-*\s*/
         plays_count_regex = /\D/i
 
-        data = scrape("https://bandzone.cz/" + slug)
-        tracks = data.css("ul#playlist").css("li")
         tracks.each do |track|
-
             album = track.css("span.album-title")[0]
             full_title = track.css("strong.title")[0].text.strip
             title = ""
@@ -48,7 +51,8 @@ class Virtual::Track
             })
 
         end
+
         return result
-    end
+    end 
 
 end

@@ -1,18 +1,20 @@
 class Virtual::Band
     include Scraper 
 
-    attr_reader :title, :image_url, :href, :slug, :genre, :city
+    attr_reader :title, :image_url, :href, :slug, :genre, :city, :tracks
 
     def initialize(options = {})
         assignParameters(options)
     end
 
+    # rychle hladanie, top vysledky
     def self.find(search_term)
         data = scrape("https://bandzone.cz/hledani.html?q=" + search_term)
         childs = data.css("section#siteSearchBand").css("div.profileLinksSmall > div")
         return self.scrapeBandsData(childs)
     end
 
+    # hladanie vsetko
     def self.findAll(search_term, page=1)
         result = OpenStruct.new
         page = scrape("https://bandzone.cz/kapely.html?q=#{search_term}&p=#{page}")
@@ -29,6 +31,24 @@ class Virtual::Band
             result.items_total = paginator['data-paginator-items'].to_i
             result.current_page = paginator.css('a.page.current').text.to_i
         end
+        return result
+    end
+
+    def self.getBand(slug)
+        result=[]
+        data = scrape("https://bandzone.cz/" + slug)
+        tracks = data.css("ul#playlist").css("li")
+        genre = data.css("div.profile-name").css("h1.cutter").css("span.cityStyle").text
+        title = data.css("div.profile-name").css("h1.cutter").text.sub(genre, "")
+
+        result = new(
+            title: title.strip,
+            image_url: data.css("section#profilePhoto").css("img")[0]['src'],
+            href: "",
+            genre: genre.strip,
+            city: "",
+            tracks: Virtual::Track.processTracks(tracks)
+        )
         return result
     end
 

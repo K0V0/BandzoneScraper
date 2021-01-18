@@ -13,4 +13,8 @@ Rails.application.routes.draw do
     to: "songs#list",
     as: "list_songs"
 
+  get "band/:slug",
+    to: "bands#show",
+    as: "show_band"
+
 end
