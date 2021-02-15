@@ -38,13 +38,13 @@ class Virtual::Band
         result=[]
         data = scrape("https://bandzone.cz/" + slug)
         tracks = data.css("ul#playlist").css("li")
-        genre_and_city = data.css("div.profile-name").css("h1.cutter").css("span.cityStyle").text.split("/")
-        genre = genre_and_city[0].strip
-        city = genre_and_city[1].strip
-        title = data.css("div.profile-name").css("h1.cutter").text.sub(genre, "")
+        genre_and_city = data.css("div.profile-name").css("h1.cutter").css("span.cityStyle").text
+        genre = genre_and_city.split("/")[0].strip
+        city = genre_and_city.split("/")[1].strip
+        title = data.css("div.profile-name").css("h1.cutter").text.sub(genre_and_city, "")
 
         result = new(
-            title: title.strip,
+            title: title.strip.gsub(/\s+/, " "),
             image_url: data.css("section#profilePhoto").css("img")[0]['src'],
             href: "https://bandzone.cz/" + slug,
             genre: genre,
